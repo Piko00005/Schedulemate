@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+}
+
+.header{
+    position: fixed;
+    margin-top: -5px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.3rem 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.header img{
+    width: 50px;
+    height: 50px;
+}
+
+.logo{
+    position: absolute;
+    font-size: 1.5rem;
+    color: #e59426;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 3rem;
+}
+
+.navbar ul{
+    list-style: none;
+}
+
+.navbar ul li{
+    position: relative;
+    float: left;
+}
+
+.navbar ul li a{
+    font-size: 18px;
+    padding: 10px;
+    padding-top: 17px;
+    color: #e59426;
+    display: block;    
+    text-align: center;
+    height: 60px;
+    width: 120px;
+}
+
+.navbar ul li a:hover{
+    background: #e59426;
+    color: #fff;
+}
+
+.navbar ul li ul{
+    position: absolute;
+    left: 0;
+    width: 120px;
+    background: #fff;
+    color: #e59426;
+    display: none;
+}
+
+.navbar ul li ul li{
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+
+.navbar ul li:focus-within > ul,
+.navbar ul li:hover > ul {
+    display: initial;
+}
+
+#check{
+    display: none;
+}
+
+.icons{
+    position: absolute;
+    right: 5%;
+    font-size: 2.5rem;
+    color: #e59426;
+    cursor: pointer;
+    display: none;
+}
+
+/*BREAKPOINTS*/
+
+@media (max-width: 992px){
+    .header{
+        padding: 1.3rem 5%;
+    }
+}
+
+@media (max-width:768px){
+    .icons{
+        display: inline-flex;
+    }
+
+    #check:checked~.icons #menu-icon{
+        display: none;
+    }
+
+    .icons #close-icon{
+        display: none;
+    }  
+
+    #check:checked~.icons #close-icon{
+        display: block;
+    }
+
+    .navbar{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: rgba(0, 0, 0, .1);
+        backdrop-filter: blur(50px);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        overflow: hidden;
+        transition: .3s ease;
+    }
+
+    #check:checked~.navbar{
+        height: 100rem;
+    }
+
+    .navbar a{
+        display: block;
+        font-size: 10px;
+        text-align: center;
+        transform: translateY(-50px);
+        transition: .3s ease;
+        opacity: 0;
+    }
+
+    #check:checked~.navbar a{
+        transform: translateY(0);
+        transition-delay: calc(.15s * var(--i));
+        opacity: 1;
+    }
+
+    .navbar ul li{
+        width: 100%;
+    }
+
+    .navbar ul li ul{
+        position: relative;
+        width: 100%;
+    }
+}

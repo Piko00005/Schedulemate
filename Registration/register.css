@@ -20,8 +20,8 @@ position: relative;
 
 section .container {
   position: relative;
-  width: 900px;
-  height: 580px;
+  width: 1000px;
+  height: 680px;
   background: #FFF;
   box-shadow: 0 15px 50px rgba(0,0,0,0.1);
   overflow: hidden;

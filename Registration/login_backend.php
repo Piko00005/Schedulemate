@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["user"])) {
-   header("Location: index.php");
+   header("Location: register_html.php");
 }
 ?>
 
@@ -10,19 +10,19 @@ if (isset($_SESSION["user"])) {
 
         //login
         if (isset($_POST["login"])) {
-           $email = $_POST["email"];
-           $password = $_POST["password"];
+           $email = $_POST["userEmail"];
+           $password = $_POST["userPass"];
            $errors = array();
            require_once dirname(__FILE__)."/database.php";
     
 
-            $sql = "SELECT * FROM tb_register WHERE email = '$email'";
+            $sql = "SELECT * FROM tb_reg WHERE userEmail = '$email'";
             $result = mysqli_query($conn, $sql);
             $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
            //restrication 
             if ($user) {
-                if (password_verify($password, $user["password"])) {
+                if (password_verify($password, $user["userPass"])) {
                     $_SESSION["user"] = "yes";
                     $_SESSION["success"] = 2;
                     header("Location: /Schedulemate/Dashboard/home.php");

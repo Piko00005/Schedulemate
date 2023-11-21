@@ -1,6 +1,4 @@
-<?php session_start();
-
-?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,8 +26,8 @@
                     <form action="login_backend.php" method="post">
 
                         <h2>Sign In</h2>
-                        <input type="text" name="email" placeholder="Email" required>
-                        <input type="password" name="password" placeholder="Password" required>
+                        <input type="text" name="userEmail" placeholder="Email" required>
+                        <input type="password" name="userPass" placeholder="Password" required>
                         <button type="submit" name="login">Login</button>
                         <p class="signup">Don't have an account? <a href="#">Register.</a></p>
                     </form>
@@ -38,29 +36,40 @@
             </div>
 
 
-
             <div class="user signupBox">
                 <div class="formBox">
                     <form action="register_backend.php" method="post">
                         <h2>Create an account</h2>
-                        <input type="text" name="firstname" placeholder="First Name" required>
-                        <input type="text" name="lastname" placeholder="Last Name" required>
-                        <input type="email" name="email" placeholder="Email" required>
-                        <select name="Position" required>
-                            <option value="" disabled selected>Select School Position</option>
-                            <option value="admin">Admin</option>
-                            <option value="dean">Dean</option>
-                            <option value="chairperson">Chairperson</option>
-                        </select>
-                        <select class="input-field" name="School" required>
+                        <input type="text" name="userFname" placeholder="First Name" required>
+                        <input type="text" name="userLname" placeholder="Last Name" required>
+                        <input type="email" name="userEmail" placeholder="Email" required>
+                        <select class="input-field" name="userSchool" required>
                             <option value="" disabled selected>Select School</option>
                             <option value="main">CTU Main-Campus</option>
                             <option value="danao">CTU Danao Campus</option>
                             <option value="argao">CTU Argao</option>
                         </select>
+                        <select name="userPosition" required>
+                            <option value="" disabled selected>Select School Position</option>
+                            <option value="admin">School Admin</option>
+                            <option value="dean">Dean</option>
+                            <option value="chairperson">Chairperson</option>
+                        </select>
+                        <select name="userDept" required>
+                            <option value="" disabled selected>Select Department</option>
+                            <option value="ccict">CCICT</option>
+                            <option value="cas">CAS</option>
+                        </select>
+                        <select name="userProgram" required>
+                            <option value="" disabled selected>Select Program</option>
+                            <option value="bsit">BSIT</option>
+                            <option value="bsis">BSIS</option>
+                            <option value="bit-ct">BIT-CT</option>
+                            <option value="cas">CAS</option>
+                        </select>
 
-                        <input type="password" name="password" placeholder="Create Password" required>
-                        <input type="password" name="repeat_password" placeholder="Confirm Password" required>
+                        <input type="password" name="userPass" placeholder="Create Password" required>
+                        <input type="password" name="userPasscon" placeholder="Confirm Password" required>
                         <button type="submit" name="submit">Register</button>
                         <p class="signup">Already have an account? <a href="#">Sign In.</a></p>
                     </form>

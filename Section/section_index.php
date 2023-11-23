@@ -15,7 +15,7 @@
             <h1>Section List</h1>
             <div>
                 <input placeholder="Search" />
-                <button class="add_new">Add New</button>
+                
             </div>
         </div>
 
@@ -30,27 +30,27 @@
                     <label for="secYearlvl">Section Year Level</label>
                     <input type="number" id="secYearlvl" placeholder="Section Year Level">
                 </div>
-
-                <div class="column">
-                    <label for="secName">Section Name</label>
-                    <input type="text" id="secName" placeholder="Section Name">
-                </div>
             </div>
 
             <div class="row">
                 <div class="column">
-                    <form>
-                        <label for="secSess">Section Session</label>
-
-                        <input type="radio" id="secSess" value="Day">
-                        <label for="day">Day</label> <br>
-                        <input type="radio" id="secSess" value="Night">
-                        <label for="night">Night</label> <br>
-                    </form>
+                    <label for="secName">Section Name</label>
+                    <input type="text" id="secName" placeholder="Section Name">
                 </div>
-            </div>
-        </div>
 
+                <div class="column">
+                    <label for="sessName">Session</label>
+                    <select id="profRank" >
+                        <option value="" disabled selected>Select Section Session</option>
+                        <option value="secSess1">Day</option>
+                        <option value="secSess2">Night</option>
+                    </select>
+                </div>      
+            </div>
+            
+            <button class="add_new">Add New</button>
+        </div>
+        
         <div class="table_section">
             <table>
                 <thead>
@@ -80,6 +80,5 @@
         </div>
     </div>
 </body>
-
 
 </html>

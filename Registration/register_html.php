@@ -93,7 +93,7 @@
                 return;
             }
             container.classList.add("active");
-            section.setAttribute("style", "background-color: #e59426")
+            section.setAttribute("style", "background-color: #e59426");
         }
 
         const toggleLinks = Array.from(document.querySelectorAll(".signup a"));

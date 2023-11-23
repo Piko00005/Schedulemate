@@ -20,7 +20,7 @@ if (isset($_SESSION["user"])) {
             $result = mysqli_query($conn, $sql);
             $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-           //restrication 
+           //restriction 
             if ($user) {
                 if (password_verify($password, $user["userPass"])) {
                     $_SESSION["user"] = "yes";
@@ -39,5 +39,4 @@ if (isset($_SESSION["user"])) {
                 header("Location: /SCHEDULEMATE/Registration/register_html.php");
             }
         }
-        ?>
-        
+?>

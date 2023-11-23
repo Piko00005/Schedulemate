@@ -21,6 +21,7 @@
     align-items: center;
     z-index: 100;
     background-color: #00224e; 
+    max-height: 85px;
 }
 
 .header img{

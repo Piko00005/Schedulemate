@@ -9,7 +9,7 @@
 
 section {
 position: relative;
-  min-height: 100vh;
+  max-height: 120vh;
   background: #00224E;
   display: flex;
   align-items: center;
@@ -40,7 +40,6 @@ section .container .user .imgBox {
   position: relative;
   width: 50%;
   height: 100%;
-  background: #00224E;
   transition: 0.5s;
 }
  

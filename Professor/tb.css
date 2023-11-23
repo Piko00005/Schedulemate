@@ -13,11 +13,11 @@ body{
 
 .table_header{
     display: flex;
-    margin-top: 120px;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     background-color: #fff;
+    margin: 120px 30px 0 30px;
 }
 
 .table_header h1{
@@ -56,18 +56,33 @@ form{
     margin-bottom: 20px;
 }
 
+
 label{
     color: #1c093c;
     font-size: 14px;
+}
+
+input{
+    padding: 10px 20px;
+    margin: 3px 10px;
+    outline: none;
+    border: 1px solid #00224E;
+    color: #00224E;
+    height: 40px;
+}
+
+select{
+    height: 40px;
 }
 
 textarea, input, select{
     width: 100%;
     font-weight: 400;
     padding: 8px 10px;
-    border-radius: 5px;
-    border: 1.2px solid #c4cae0;
+    border-radius: 6px;
+    border: 1.2px solid #00224E;
     margin-top: 5px;
+    margin-left: 10px;
 }
 
 textarea{
@@ -101,15 +116,6 @@ td button:nth-child(2){
     padding: 10px 20px;
     color: #fff;
     background-color: #00224E;
-}
-
-input{
-    padding: 10px 20px;
-    margin: 0 10px;
-    outline: none;
-    border: 1px solid #00224E;
-    border-radius: 6px;
-    color: #00224E;
 }
 
 .table_section{

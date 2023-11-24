@@ -43,6 +43,7 @@ if (isset($_GET['prof_edit'])) {
         <div class="table_header">
             <h1>Professor's List</h1>
             <div>
+                
                 <input placeholder="Search" />
             </div>
         </div>

@@ -52,12 +52,12 @@ if (isset($_GET['sub_edit'])) {
 
                     <div class="column">
                         <label for="subDesc">Subject Description</label>
-                        <input type="text" name="subDesc" placeholder="Subject Description" value="<?php echo $subCode ?>">
+                        <input type="text" name="subDesc" placeholder="Subject Description" value="<?php echo $subDesc ?>">
                     </div>
 
                     <div class="column">
                         <label for="subUnits">Subject Units</label>
-                        <input type="number" name="subUnits" placeholder="Subject Units" value="<?php echo $subCode ?>">
+                        <input type="number" name="subUnits" placeholder="Subject Units" value="<?php echo $subUnits ?>">
                     </div>
                 </div>
 
@@ -65,12 +65,12 @@ if (isset($_GET['sub_edit'])) {
 
                     <div class="column">
                         <label for="subLabhours">Subject Lab Hours</label>
-                        <input type="number" name="subLabhours" placeholder="Subject Lab Hours" value="<?php echo $subCode ?>">
+                        <input type="number" name="subLabhours" placeholder="Subject Lab Hours" value="<?php echo $subLabhours ?>">
                     </div>
 
                     <div class="column">
                         <label for="subLechours">Subject Lec Hours</label>
-                        <input type="number" name="subLechours" placeholder="Subject Lec Hours" value="<?php echo $subCode ?>">
+                        <input type="number" name="subLechours" placeholder="Subject Lec Hours" value="<?php echo $subLechours ?>">
                     </div>
                 </div>
 

@@ -5,7 +5,7 @@ include_once ('../Professor/db.php');
 
 $subCode = "";
 $subDesc = "";
-$subUnits = 0;
+$subUnits = 0;  
 $subLabhours = 0;
 $subLechours = 0;
 $subStatus = 0;
@@ -26,7 +26,7 @@ if (isset($_POST['sub_add_new'])) {
     $stmt->execute();
 
     if ($stmt) {
-        $_SESSION['message'] = "Subject Information Saved Successfully";
+        $_SESSION['message'] = "Subject Details Saved Successfully";
         header("Location: subject_index.php");
     } else {
         echo "Error: ";
@@ -34,6 +34,7 @@ if (isset($_POST['sub_add_new'])) {
     $stmt->close();
 }
 
+//For updating records
 if (isset($_POST["sub_update"])) {
     $subCode = $_POST['subCode'];
     $subDesc = $_POST['subDesc'];
@@ -48,7 +49,7 @@ if (isset($_POST["sub_update"])) {
     $stmt->execute();
 
     if ($stmt) {
-        $_SESSION["message"] = "Information Updated Successfully";
+        $_SESSION["message"] = "Subject Details Updated Successfully";
         header('Location: subject_index.php');
     } else {
         echo "Error: ";

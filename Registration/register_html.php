@@ -36,7 +36,8 @@
             </div>
 
 
-            <div class="user signupBox">
+            <div class="user
+             signupBox">
                 <div class="formBox">
                     <form action="register_backend.php" method="post">
                         <h2>Create an account</h2>
@@ -49,17 +50,20 @@
                             <option value="danao">CTU Danao Campus</option>
                             <option value="argao">CTU Argao</option>
                         </select>
+
                         <select name="userPosition" required>
                             <option value="" disabled selected>Select School Position</option>
                             <option value="admin">School Admin</option>
                             <option value="dean">Dean</option>
                             <option value="chairperson">Chairperson</option>
                         </select>
+
                         <select name="userDept" required>
                             <option value="" disabled selected>Select Department</option>
                             <option value="ccict">CCICT</option>
                             <option value="cas">CAS</option>
                         </select>
+
                         <select name="userProgram" required>
                             <option value="" disabled selected>Select Program</option>
                             <option value="bsit">BSIT</option>
@@ -93,7 +97,7 @@
                 return;
             }
             container.classList.add("active");
-            section.setAttribute("style", "background-color: #e59426");
+            section.setAttribute("style", "background-color: #e59426")
         }
 
         const toggleLinks = Array.from(document.querySelectorAll(".signup a"));

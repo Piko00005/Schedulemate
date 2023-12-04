@@ -4,11 +4,11 @@ body{
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: auto;
+    
 }
 
 .table{
     width: 100%;
-    border-collapse: collapse;
 }
 
 .table_header{
@@ -24,14 +24,41 @@ body{
     color: black;
 }
 
+.message{
+    width: 100%;
+    position: relative;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    color: red;
+    transition: 0.3s;
+    animation: buttons .3s linear;
+}
+
+.hidden{
+    display: none; /*this for the hidden details*/
+}
+
+.details .inner-details {
+    width: 100%; /* Adjust as needed */
+}
+
+.detail-title {
+    font-weight: bold;
+    padding-right: 10px; /* Space between title and content */
+    position: sticky;
+    top: 0;
+    background-color: #E59426;
+    font-size: 15px;
+}
+
+
 .container{
     width: 100%;
     min-width: 420px;
     padding: 35px 50px;
     position: relative;
     border-radius: 10px;
-    background-color: #8da9c4;
-    margin-bottom: 25px;
 }
 
 p{
@@ -58,15 +85,10 @@ form{
     margin-bottom: 20px;
 }
 
+
 label{
     color: #1c093c;
     font-size: 14px;
-}
-
-p{
-    color: #1c093c;
-    font-size: 14px;
-    text-align: left;
 }
 
 input{
@@ -76,11 +98,6 @@ input{
     border: 1px solid #00224E;
     color: #00224E;
     height: 40px;
-}
-
-input[type="checkbox"]{
-    height: 25px;
-    margin: 5px 10px;
 }
 
 select{
@@ -116,12 +133,21 @@ button{
     color: #fff;
 }
 
+.button-container {
+    display: flex; /* Display buttons horizontally */
+    align-items: center; /* Center buttons vertically */
+}
+
+.button-container button {
+    margin-right: 5px; /* Add some spacing between buttons */
+}
+
 td button:nth-child(1){
-    background-color: #798f32;
+    background-color: #00224E;
 }
 
 td button:nth-child(2){
-    background-color: #b11b1b;
+    background-color: #00224E;
 }
 
 .add_new{
@@ -148,7 +174,6 @@ thead th{
     top: 0;
     background-color: #E59426;
     font-size: 15px;
-    width: 100%;
 }
 
 th, td{
@@ -156,6 +181,14 @@ th, td{
     padding: 10px 20px;
     word-break: break-all;
     text-align: center;
+}
+
+td img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 5px solid #ced0d2;
 }
 
 tr:hover td{

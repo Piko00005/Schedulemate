@@ -1,7 +1,8 @@
-<?php include('../Dashboard/nav.html'); ?>
-
 <?php
+session_start();
+include('../Dashboard/nav.html');
 include 'prof_all_process.php';
+
 if (isset($_GET['prof_edit'])) {
     $profID = $_GET['prof_edit'];
     $prof_edit_state = true;
@@ -30,35 +31,37 @@ if (isset($_GET['prof_edit'])) {
 </head>
 
 <body>
-    <?php if (isset($_SESSION['message'])) : ?>
-        <div class="message">
-            <?php
-            echo $_SESSION['message'];
-            unset($_SESSION['message']);
-            ?>
-        </div>
-    <?php endif ?>
-
     <div class="table">
         <div class="table_header">
             <h1>Professor's List</h1>
             <div>
-                
                 <input placeholder="Search" />
             </div>
         </div>
+    </div>
+
+    <div class="message">
+        <?php if (isset($_SESSION['message'])) : ?>
+            <div class="message">
+                <?php
+                echo $_SESSION['message'];
+                unset($_SESSION['message']);
+                ?>
+            </div>
+        <?php endif ?>
     </div>
 
     <!--- Input Fields --->
     <div class="container">
         <form method="POST" action="prof_all_process.php">
             <input type="hidden" name="profID" value="<?php echo $profID; ?>">
+            <input type="hidden" name="profStatus" value="<?php echo $profStatus; ?>">
             <div class="row">
                 <div class="column">
                     <label for="profFname">Firstname</label>
                     <input type="text" name="profFname" placeholder="Firstname" value="<?php echo $profFname; ?>">
                 </div>
- 
+
                 <div class="column">
                     <label for="profLname">Lastname</label>
                     <input type="text" name="profLname" placeholder="Lastname" value="<?php echo $profLname; ?>">
@@ -159,10 +162,6 @@ if (isset($_GET['prof_edit'])) {
                     <th>No.</th>
                     <th>First Name</th>
                     <th>Last Name</th>
-                    <th>Mobile No.</th>
-                    <th>Address</th>
-                    <th>Expertise</th>
-                    <th>Education</th>
                     <th>Ranking</th>
                     <th>Units</th>
                     <th>Employment Status</th>
@@ -181,13 +180,9 @@ if (isset($_GET['prof_edit'])) {
                         <td><?php echo $i; ?></td>
                         <td><?php echo $row["profFname"] ?></td>
                         <td><?php echo $row["profLname"] ?></td>
-                        <td><?php echo $row["profMobile"] ?></td>
-                        <td><?php echo $row["profAddress"] ?></td>
-                        <td><?php echo $row["profEduc"] ?></td>
-                        <td><?php echo $row["profExpert"] ?></td>
                         <td><?php echo $row["profRank"] ?></td>
                         <td><?php echo $row["profUnit"] ?></td>
-                        <td><?php echo $row["profEmployStatus"]?></td>
+                        <td><?php echo $row["profEmployStatus"] ?></td>
                         <td><?php
                             if ($row['profStatus'] == "1") {
                                 echo "Active";
@@ -195,11 +190,42 @@ if (isset($_GET['prof_edit'])) {
                                 echo "Inactive";
                             } ?></td>
                         <td>
-                            <a href="prof_index.php?prof_edit=<?php echo $row["profID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
-                            <form method="POST" action="prof_all_process.php">
-                                <input type="hidden" name="profID" value="<?php echo $row['profID']; ?>">
-                                <button type="submit" class="edit_btn" name="prof_toggle_status"><i class='bx bx-window-close'></i></button>
-                            </form>
+                            <div class="button-container">
+                                <!-- this is the more information button -->
+                                <button class="toggleDetails">+</button>
+
+                                <!-- this is the Edit Information button -->
+                                <a href="prof_index.php?prof_edit=<?php echo $row["profID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
+
+                                <form method="POST" action="prof_all_process.php">
+                                    <input type="hidden" name="profID" value="<?php echo $row['profID']; ?>">
+                                    <button type="submit" class="edit_btn" name="prof_toggle_status"><i class='bx bx-window-close'></i></button>
+                                </form>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr class="details hidden">
+                        <td colspan="8"> <!-- Adjust the colspan to match the number of columns in your table -->
+                            <table class="inner-details">
+                                <tr>
+                                    <td class="detail-title">Mobile No.</td>
+                                    <td class="detail-content"><?php echo $row["profMobile"]; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="detail-title">Address</td>
+                                    <td class="detail-content"><?php echo $row["profAddress"]; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="detail-title">Education</td>
+                                    <td class="detail-content"><?php echo $row["profEduc"]; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="detail-title">Expertise</td>
+                                    <td class="detail-content"><?php echo $row["profExpert"]; ?></td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 <?php
@@ -210,6 +236,16 @@ if (isset($_GET['prof_edit'])) {
     </div>
     </div>
 
-</body>
-</html>
+    <script>
+        document.querySelectorAll('.toggleDetails').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var detailRow = this.closest('tr').nextElementSibling;
+                detailRow.classList.toggle('hidden');
+                this.textContent = detailRow.classList.contains('hidden') ? '+' : '-';
+            });
+        });
+    </script>
 
+</body>
+
+</html>

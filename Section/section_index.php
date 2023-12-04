@@ -33,7 +33,11 @@ if (isset($_GET['sec_edit'])) {
         </div>
 
         <div class="container">
+
             <form method="POST" action="section_all_process.php">
+                <input type="hidden" name="sectionID" value="<?php echo $sectionID; ?>">
+                <input type="hidden" name="sectionStatus" value="<?php echo $sectionStatus; ?>">
+
                 <div class="row">
                     <div class="column">
                         <label for="secProgram">Section Program</label>
@@ -61,7 +65,7 @@ if (isset($_GET['sec_edit'])) {
                         </select>
                     </div>
                 </div>
-                
+
                 <!-- switch to editable -->
                 <?php if ($sec_edit_state == false) : ?>
                     <button class="add_new" type="submit" name="sec_add_new">Add New</button>

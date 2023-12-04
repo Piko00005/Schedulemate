@@ -30,7 +30,7 @@ if (isset($_POST["submit"])) {
     require_once dirname(__FILE__)."/database.php";
     
       //restrictations
-    $sql = "SELECT * FROM tb_reg WHERE userEmail = '$email'";
+    $sql = "SELECT * FROM tb_register WHERE userEmail = '$email'";
     $result = mysqli_query($conn, $sql);
     $rowCount = mysqli_num_rows($result);
     
@@ -45,7 +45,7 @@ if (isset($_POST["submit"])) {
     } else {
 
         //add user 
-        $sql = "INSERT INTO tb_reg (userFname, userLname, userEmail, userSchool, userPosition, userDept, userProgram, userPass) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO tb_register (userFname, userLname, userEmail, userSchool, userPosition, userDept, userProgram, userPass) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_stmt_init($conn);
         $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
         if ($prepareStmt) {

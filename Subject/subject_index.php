@@ -44,6 +44,12 @@ if (isset($_GET['sub_edit'])) {
 
         <div class="container">
             <form method="POST" action="subject_all_process.php">
+
+
+                <input type="hidden" name="subjectID" value="<?php echo $subjectID; ?>">
+                <input type="hidden" name="subjectStatus" value="<?php echo $subjectStatus; ?>">
+
+
                 <div class="row">
                     <div class="column">
                         <label for="subCode">Subject Code</label>

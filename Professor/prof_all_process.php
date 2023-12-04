@@ -30,15 +30,37 @@ if (isset($_POST["prof_add_new"])) {
     $profEmployStatus = $_POST["profEmployStatus"];
     $profStatus = $_POST["profStatus"]? $_POST["profStatus"] : 1; // 1 as a default value or whatever suits your logic
 
+    // Validate required fields
+    if (empty($profFname) || empty($profLname) || empty($profMobile)) {
+        $_SESSION['message'] = "Error: Missing required fields";
+        header("Location: /SCHEDULEMATE/Professor/prof_index.php");
+        die();
+    }
+
+    // Check for duplicate entry 
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM tb_professor WHERE profFname=? AND profLname=? AND profMobile=?");
+    $stmt->bind_param("sss", $profFname, $profLname, $profMobile);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($count > 0) {
+        $_SESSION['message'] = "Error: Duplicate entry";
+        header("Location: /SCHEDULEMATE/Professor/prof_index.php");
+        die();
+    }
+
+    //Add the information to the Database
     $stmt = $conn->prepare("INSERT INTO tb_professor (profFname, profLname, profMobile, profAddress, profEduc, profExpert, profRank, profUnit, profEmployStatus, profStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssssss", $profFname, $profLname, $profMobile, $profAddress, $profEduc, $profExpert, $profRank, $profUnit, $profEmployStatus, $profStatus);
     $stmt->execute();
 
     if ($stmt) {
         $_SESSION['message'] = "Information Saved Successfully";
-        header("Location:prof_index.php");
+        header("Location: /SCHEDULEMATE/Professor/prof_index.php");
     } else {
-        echo "Error: ";
+        die("Something went wrong");
     }
     $stmt->close();
 }
@@ -56,15 +78,48 @@ if (isset($_POST["prof_update"])) {
     $profEmployStatus = $_POST["profEmployStatus"];
     $profStatus = $_POST["profStatus"];
     $profID = $_POST["profID"];
+
+
+
     $stmt = $conn->prepare("UPDATE tb_professor SET profFname=?, profLname=?, profMobile=?, profAddress=?, profEduc=?, profExpert=?, profRank=?, profUnit=?, profEmployStatus=?, profStatus=? WHERE profID=?");
     $stmt->bind_param("ssssssssssi", $profFname, $profLname, $profMobile, $profAddress, $profEduc, $profExpert, $profRank, $profUnit, $profEmployStatus, $profStatus, $profID);
     $stmt->execute();
 
+    // Retrieve current data
+    $currentData = $conn->prepare("SELECT * FROM tb_professor WHERE profID=?");
+    $currentData->bind_param("i", $profID);
+    $currentData->execute();
+    $result = $currentData->get_result();
+    $currentData->close();
+
+    if ($result) {
+        $currentRow = $result->fetch_assoc();
+
+        // Compare each field
+        if (
+            $currentRow["profFname"] == $_POST["profFname"] &&
+            $currentRow["profLname"] == $_POST["profLname"] &&
+            $currentRow["profMobile"] == $_POST["profMobile"] &&
+            $currentRow["profAddress"] == $_POST["profAddress"] &&
+            $currentRow["profEduc"] == $_POST["profEduc"] &&
+            $currentRow["profExpert"] == $_POST["profExpert"] &&
+            $currentRow["profRank"] == $_POST["profRank"] &&
+            $currentRow["profUnit"] == $_POST["profUnit"] &&
+            $currentRow["profEmployStatus"] == $_POST["profEmployStatus"]
+            // Add any other fields you want to check
+        ) {
+            // No changes detected
+            $_SESSION["message"] = "No changes detected in the information.";
+            header('Location: /SCHEDULEMATE/Professor/prof_index.php');
+            exit;
+        }
+    }
+
     if ($stmt) {
         $_SESSION["message"] = "Information Updated Successfully";
-        header('Location: prof_index.php');
+        header('Location: /SCHEDULEMATE/Professor/prof_index.php');
     } else {
-        echo "Error: ";
+        die("Something went wrong");
     }
     $stmt->close();
 }
@@ -88,9 +143,9 @@ if (isset($_POST['prof_toggle_status'])) {
 
     if ($stmt) {
         $_SESSION["message"] = "Status Updated Successfully";
-        header('Location: prof_index.php');
+        header('Location: /SCHEDULEMATE/Professor/prof_index.php');
     } else {
-        echo "Error: ";
+        die("Something went wrong");
     }
     $stmt->close();
 }

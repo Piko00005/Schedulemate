@@ -8,6 +8,7 @@ if (isset($_GET['room_edit'])) {
     $record = mysqli_query($conn, "SELECT * FROM tb_room WHERE roomID=$roomID");
     $data = mysqli_fetch_array($record);
     $roomBuild = $data['roomBuild'];
+    $roomFloornum = $data['roomFloornum'];
     $roomNum = $data['roomNum'];
     $roomStatus = $data['roomStatus'];
 }
@@ -31,17 +32,35 @@ if (isset($_GET['room_edit'])) {
             </div>
         </div>
 
+        <div class="message">
+            <?php if (isset($_SESSION['message'])) : ?>
+                <div class="message">
+                    <?php
+                    echo $_SESSION['message'];
+                    unset($_SESSION['message']);
+                    ?>
+                </div>
+            <?php endif ?>
+        </div>
+
         <div class="container">
             <form method="POST" action="room_all_process.php">
+                <input type="hidden" name="roomID" value="<?php echo $roomID; ?>">
+                <input type="hidden" name="roomStatus" value="<?php echo $roomStatus; ?>">
                 <div class="row">
                     <div class="column">
                         <label for="roomBuild">Building Name</label>
-                        <input type="text" name="roomBuild" placeholder="Building Name">
+                        <input type="text" name="roomBuild" placeholder="Building Name" value="<?php echo $roomBuild; ?>">
                     </div>
 
                     <div class="column">
-                        <label for="subUnits">Room Number</label>
-                        <input type="number" name="roomNum" placeholder="Room Number">
+                        <label for="roomFloornum">Floor Number</label>
+                        <input type="number" name="roomFloornum" placeholder="Floor Number" value="<?php echo $roomFloornum; ?>">
+                    </div>
+
+                    <div class="column">
+                        <label for="roomNum">Room Number</label>
+                        <input type="number" name="roomNum" placeholder="Room Number" value="<?php echo $roomNum; ?>">
                     </div>
                 </div>
 
@@ -59,6 +78,7 @@ if (isset($_GET['room_edit'])) {
                     <tr>
                         <th>No.</th>
                         <th>Building Name</th>
+                        <th>Floor Number</th>
                         <th>Room Number</th>
                         <th>Status</th>
                         <th></th>
@@ -73,6 +93,7 @@ if (isset($_GET['room_edit'])) {
                         <tr>
                             <td><?php echo $i; ?></td>
                             <td><?php echo $row["roomBuild"] ?></td>
+                            <td><?php echo $row["roomFloornum"] ?>th Floor</td>
                             <td><?php echo $row["roomNum"] ?></td>
                             <td><?php
                                 if ($row['roomStatus'] == "1") {
@@ -80,14 +101,26 @@ if (isset($_GET['room_edit'])) {
                                 } else {
                                     echo "Inactive";
                                 } ?></td>
+
+
                             <td>
-                                <a href="room_index.php?room_edit=<?php echo $row["roomID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
-                                <form method="POST" action="room_all_process.php">
-                                    <input type="hidden" name="roomID" value="<?php echo $row['roomID']; ?>">
-                                    <button type="submit" class="edit_btn" name="room_toggle_status"><i class='bx bx-window-close'></i></button>
-                                </form>
+                                <div class="button-container">
+
+                                    <!-- this is the Edit Information button -->
+                                    <a href="room_index.php?room_edit=<?php echo $row["roomID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
+
+                                    <form method="POST" action="room_all_process.php">
+                                        <input type="hidden" name="roomID" value="<?php echo $row['roomID']; ?>">
+                                        <button type="submit" class="edit_btn" name="room_toggle_status"><i class='bx bx-window-close'></i></button>
+                                    </form>
+
+                                </div>
                             </td>
+
+
                         </tr>
+
+
                     <?php
                         $i++;
                     } ?>

@@ -51,6 +51,13 @@ if (isset($_POST["prof_add_new"])) {
         die();
     }
 
+     // Validate the mobile number format
+    if (!preg_match('/^(?:\+639|09)\d{9}$/', $profMobile)) {
+        $_SESSION['message'] = "Error: Invalid mobile number format. Use either '+639xxxxxxxxx' or '09xxxxxxxxx'.";
+        header("Location: /SCHEDULEMATE/Professor/prof_index.php");
+        die();
+    }
+
     //Add the information to the Database
     $stmt = $conn->prepare("INSERT INTO tb_professor (profFname, profLname, profMobile, profAddress, profEduc, profExpert, profRank, profUnit, profEmployStatus, profStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssssss", $profFname, $profLname, $profMobile, $profAddress, $profEduc, $profExpert, $profRank, $profUnit, $profEmployStatus, $profStatus);
@@ -79,47 +86,44 @@ if (isset($_POST["prof_update"])) {
     $profStatus = $_POST["profStatus"];
     $profID = $_POST["profID"];
 
+    // Fetch the current data from the database
+    $currentDataQuery = "SELECT * FROM tb_professor WHERE profID = ?";
+    $currentDataStmt = $conn->prepare($currentDataQuery);
+    $currentDataStmt->bind_param("i", $profID);
+    $currentDataStmt->execute();
+    $currentDataResult = $currentDataStmt->get_result();
+    $currentDataRow = $currentDataResult->fetch_assoc();
 
+    // Compare each field to check for changes
+    $fieldsToCheck = ["profFname", "profLname", "profMobile", "profAddress", "profEduc", "profExpert", "profRank", "profUnit", "profEmployStatus"];
+    $changesDetected = false;
 
+    foreach ($fieldsToCheck as $field) {
+        if ($currentDataRow[$field] != $_POST[$field]) {
+            $changesDetected = true;
+            break;
+        }
+    }
+
+    if (!$changesDetected) {
+        // No changes detected
+        $_SESSION["message"] = "No changes detected in the information.";
+        header('Location: /SCHEDULEMATE/Professor/prof_index.php');
+        exit;
+    }
+
+    // Proceed with the update
     $stmt = $conn->prepare("UPDATE tb_professor SET profFname=?, profLname=?, profMobile=?, profAddress=?, profEduc=?, profExpert=?, profRank=?, profUnit=?, profEmployStatus=?, profStatus=? WHERE profID=?");
     $stmt->bind_param("ssssssssssi", $profFname, $profLname, $profMobile, $profAddress, $profEduc, $profExpert, $profRank, $profUnit, $profEmployStatus, $profStatus, $profID);
     $stmt->execute();
-
-    // Retrieve current data
-    $currentData = $conn->prepare("SELECT * FROM tb_professor WHERE profID=?");
-    $currentData->bind_param("i", $profID);
-    $currentData->execute();
-    $result = $currentData->get_result();
-    $currentData->close();
-
-    if ($result) {
-        $currentRow = $result->fetch_assoc();
-
-        // Compare each field
-        if (
-            $currentRow["profFname"] == $_POST["profFname"] &&
-            $currentRow["profLname"] == $_POST["profLname"] &&
-            $currentRow["profMobile"] == $_POST["profMobile"] &&
-            $currentRow["profAddress"] == $_POST["profAddress"] &&
-            $currentRow["profEduc"] == $_POST["profEduc"] &&
-            $currentRow["profExpert"] == $_POST["profExpert"] &&
-            $currentRow["profRank"] == $_POST["profRank"] &&
-            $currentRow["profUnit"] == $_POST["profUnit"] &&
-            $currentRow["profEmployStatus"] == $_POST["profEmployStatus"]
-            // Add any other fields you want to check
-        ) {
-            // No changes detected
-            $_SESSION["message"] = "No changes detected in the information.";
-            header('Location: /SCHEDULEMATE/Professor/prof_index.php');
-            exit;
-        }
-    }
 
     if ($stmt) {
         $_SESSION["message"] = "Information Updated Successfully";
         header('Location: /SCHEDULEMATE/Professor/prof_index.php');
     } else {
-        die("Something went wrong");
+        // Handle the update error
+        $_SESSION['error'] = "An error occurred while updating professor details.";
+        header("Location: /SCHEDULEMATE/Professor/prof_index.php");
     }
     $stmt->close();
 }

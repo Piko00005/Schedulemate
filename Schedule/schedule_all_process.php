@@ -2,14 +2,14 @@
 //session_start();
 
 include_once('../Professor/db.php');
-include_once ('../Subject/subject_all_process.php');
+include_once('../Subject/subject_all_process.php');
 
 $plotYear = "";
 $plotSem = "";
 $plotSubj = "";
 $plotSection = "";
-$plotRoom= "";
-$plotProf ="";
+$plotRoom = "";
+$plotProf = "";
 $plotDay = "";
 $plotTimeStart = 0;
 $plotTimeEnd = 0;
@@ -31,29 +31,34 @@ if (isset($_POST['sched_add_new'])) {
     $plotRoom = $_POST["plotRoom"];
     $plotProf = $_POST["plotProf"];
 
-
-
-  
-    
     $stmt = $conn->prepare("INSERT INTO tb_plotting (plotYear, plotSem, plotSubj, plotSection, plotRoom, plotProf) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $plotYear,$plotSem, $plotSubj, $plotSection, $plotRoom, $plotProf);
+    $stmt->bind_param("ssssss", $plotYear, $plotSem, $plotSubj, $plotSection, $plotRoom, $plotProf);
     $stmt->execute();
+
+    $result = $conn->query("SELECT * FROM tb_plotting ORDER BY plotID DESC limit 1");
+    $row = $result->fetch_row();
+    // echo"<pre>";
+    // var_dump($row[0]);
+    // echo"</pre>";
+    // die;
+
+
 
     //sub table
     $plotDay = $_POST["plotMon"];
     $plotTimeStart = $_POST["tsMon"];
     $plotTimeEnd = $_POST["teMon"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
     $plotDay = $_POST["plotTue"];
     $plotTimeStart = $_POST["tsTue"];
     $plotTimeEnd = $_POST["teTue"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
 
@@ -61,40 +66,40 @@ if (isset($_POST['sched_add_new'])) {
     $plotTimeStart = $_POST["tsWed"];
     $plotTimeEnd = $_POST["teWed"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
     $plotDay = $_POST["plotThu"];
     $plotTimeStart = $_POST["tsThu"];
     $plotTimeEnd = $_POST["teThu"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
     $plotDay = $_POST["plotFri"];
     $plotTimeStart = $_POST["tsFri"];
     $plotTimeEnd = $_POST["teFri"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
     $plotDay = $_POST["plotSat"];
     $plotTimeStart = $_POST["tsSat"];
     $plotTimeEnd = $_POST["teSat"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
     $plotDay = $_POST["plotSun"];
     $plotTimeStart = $_POST["tsSun"];
     $plotTimeEnd = $_POST["teSun"];
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $plotDay,$plotTimeStart, $plotTimeEnd);
+    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
     $stmt->execute();
 
 
@@ -119,9 +124,9 @@ if (isset($_POST['sched_update'])) {
     $plotTimeStart  = $_POST["plotTimeStart"];
     $plotTimeEnd = $_POST["plotTimeEnd"];
     $plotID = $_POST['plotID'];
-    
+
     $stmt = $conn->prepare("UPDATE tb_plotting SET plotSubj=?, plotSection=?, plotRoom=?, plotProf=?, plotWeek=? , plotTimeStart=?, plotTimeEnd=? WHERE plotID=?");
-    $stmt->bind_param("sssssssi", $plotSubj, $plotSection, $plotRoom,$plotProf,  $plotWeek, $plotTimeStart , $plotTimeEnd, $plotID);
+    $stmt->bind_param("sssssssi", $plotSubj, $plotSection, $plotRoom, $plotProf,  $plotWeek, $plotTimeStart, $plotTimeEnd, $plotID);
     $stmt->execute();
 
     if ($stmt) {
@@ -132,10 +137,3 @@ if (isset($_POST['sched_update'])) {
     }
     $stmt->close();
 }
-?>
-
-
-
-
-
-

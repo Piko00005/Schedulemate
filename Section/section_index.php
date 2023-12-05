@@ -32,6 +32,19 @@ if (isset($_GET['sec_edit'])) {
             </div>
         </div>
 
+        <!-- This is to display the notifications or error messages -->
+        <div class="message">
+            <?php if (isset($_SESSION['message'])) : ?>
+                <div class="message">
+                    <?php
+                    echo $_SESSION['message'];
+                    unset($_SESSION['message']);
+                    ?>
+                </div>
+            <?php endif ?>
+        </div>
+
+        <!-- Input Fields -->
         <div class="container">
 
             <form method="POST" action="section_all_process.php">

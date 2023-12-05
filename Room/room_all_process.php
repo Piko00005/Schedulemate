@@ -17,6 +17,20 @@ if (isset($_POST["room_add_new"])) {
     $roomNum = $_POST["roomNum"];
     $roomStatus = $_POST["roomStatus"] ? $_POST["roomStatus"] : 1; // 1 as a default value or whatever suits your logic;
 
+    // Check for valid floor number (1 digit or less) and not negative
+    if (!preg_match('/^\d{1}$/', $roomFloornum) || $roomFloornum < 0) {
+        $_SESSION['message'] = "Error: Invalid floor number. It should be 1 digit or less and non-negative.";
+        header("Location: room_index.php");
+        exit;
+    }
+
+    // Check for valid room number (3 digits or less) and not negative
+    if (!preg_match('/^\d{1,3}$/', $roomNum) || $roomNum < 0) {
+        $_SESSION['message'] = "Error: Invalid room number. It should be 3 digits or less and non-negative.";
+        header("Location: room_index.php");
+        exit;
+    }
+
     // Check for duplicate room, excluding the current one
     $stmt = $conn->prepare("SELECT COUNT(*) FROM tb_room WHERE roomBuild=? AND roomFloornum=? AND roomNum=? AND roomID != ?");
     $stmt->bind_param("sisi", $roomBuild, $roomFloornum, $roomNum, $roomID);
@@ -53,11 +67,6 @@ if (isset($_POST["room_update"])) {
     $roomNum = $_POST["roomNum"];
     $roomStatus = $_POST["roomStatus"];
     $roomID = $_POST["roomID"];
-
-    // echo"<pre>";
-    // var_dump($_POST);
-    // echo"</pre>";
-    // die;
 
     $stmt = $conn->prepare("UPDATE tb_room SET roomBuild=?, roomFloornum=?, roomNum=?, roomStatus=? WHERE roomID=?");
     $stmt->bind_param("sisii", $roomBuild, $roomFloornum, $roomNum, $roomStatus, $roomID);

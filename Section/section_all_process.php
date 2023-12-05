@@ -14,10 +14,18 @@ $sec_edit_state = false;
 //saving records
 if (isset($_POST['sec_add_new'])) {
     $secProgram = $_POST["secProgram"];
+    
     $secYearlvl = $_POST["secYearlvl"];
     $secName = $_POST["secName"];
     $secSession = $_POST["secSession"];
     $secStatus = $_POST["secStatus"] ? $_POST["secStatus"] : 1; // 1 as a default value or whatever suits your logic;
+
+    // Validate secYearlvl as a non-negative integer
+    if (!is_numeric($secYearlvl) || $secYearlvl < 0) {
+        $_SESSION['error'] = "Year Level must be a non-negative integer.";
+        header("Location: section_index.php");
+        exit();
+    }
 
     $stmt = $conn->prepare("INSERT INTO tb_section (secProgram, secYearlvl, secName, secSession, secStatus) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $secProgram, $secYearlvl, $secName, $secSession, $secStatus);
@@ -41,7 +49,7 @@ if (isset($_POST['sec_update'])) {
     $secSession = $_POST["secSession"];
     $secStatus = $_POST["secStatus"];
     $secID = $_POST['secID'];
-    
+
     $stmt = $conn->prepare("UPDATE tb_section SET secProgram=?, secYearlvl=?, secName=?, secSession=?, secStatus=? WHERE secID=?");
     $stmt->bind_param("sisssi", $secProgram, $secYearlvl, $secName, $secSession, $secStatus, $secID);
     $stmt->execute();
@@ -80,4 +88,3 @@ if (isset($_POST['sec_toggle_status'])) {
     }
     $stmt->close();
 }
-?>

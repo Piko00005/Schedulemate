@@ -95,7 +95,7 @@ function generateAcademicYears()
                             if (mysqli_num_rows($result_subject) > 0) {
                                 while ($row = mysqli_fetch_assoc($result_subject)) {
                             ?>
-                                    <option value="<?= $row['subID'] ?> "><?= $row['subCode'] ?></option>
+                                    <option value="<?= $row['subCode'] ?> "><?= $row['subCode'] ?></option>
                             <?php
                                 }
                             }
@@ -111,10 +111,11 @@ function generateAcademicYears()
                             if (mysqli_num_rows($result_section) > 0) {
                                 while ($row = mysqli_fetch_assoc($result_section)) {
                             ?>
-                                    <option value="<?= $row['secID'] ?> "><?= $row['secProgram'] ?> <?= $row['secYearlvl'] ?> <?= $row['secName'] ?></option>
+                                    <option value="<?= $row['secProgram'] ?><?= $row['secYearlvl'] ?><?= $row['secName'] ?> "><?= $row['secProgram'] ?> <?= $row['secYearlvl'] ?> <?= $row['secName'] ?></option>
                             <?php
                                 }
                             } ?>
+                            
                         </select>
                     </div>
 
@@ -126,7 +127,7 @@ function generateAcademicYears()
                             if (mysqli_num_rows($result_room) > 0) {
                                 while ($row = mysqli_fetch_assoc($result_room)) {
                             ?>
-                                    <option value="<?= $row['roomID'] ?> "><?= $row['roomBuild'] ?> <?= $row['roomNum'] ?></option>
+                                    <option value="<?= $row['roomBuild'] ?> <?= $row['roomNum'] ?>"><?= $row['roomBuild'] ?> <?= $row['roomNum'] ?></option>
                             <?php
                                 }
                             } ?>
@@ -141,7 +142,7 @@ function generateAcademicYears()
                             if (mysqli_num_rows($result_professor) > 0) {
                                 while ($row = mysqli_fetch_assoc($result_professor)) {
                             ?>
-                                    <option value="<?= $row['profID'] ?> "><?= $row['profFname'] ?> <?= $row['profLname'] ?></option>
+                                    <option value="<?= $row['profFname'] ?><?= $row['profLname'] ?> "><?= $row['profFname'] ?> <?= $row['profLname'] ?></option>
                             <?php
                                 }
                             } ?>
@@ -210,6 +211,63 @@ function generateAcademicYears()
                 </div>
                 <button class="add_new" type="submit" name="sched_add_new">Add New</button>
             </form>
+        </div>
+
+        <div class="table_section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Academic Year</th>
+                        <th>Semester</th>
+                        <th>Subject</th>
+                        <th>Section</th>
+                        <th>Room</th>
+                        <th>Professor</th>
+                        <th>Time</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $result = mysqli_query($conn, "SELECT * FROM tb_plotting, tb_week");
+                    $i = 1;
+                    while ($row = mysqli_fetch_array($result)) {
+                    ?>
+                        <tr>
+                            <td><?php echo $i; ?></td>
+                            <td><?php echo $row["plotYear"] ?></td>
+                            <td><?php echo $row["plotSem"] ?></td>
+                            <td><?php echo $row["plotSubj"] ?></td>
+                            <td><?php echo $row["plotSection"] ?></td>
+                            <td><?php echo $row["plotRoom"] ?></td>
+                            <td><?php echo $row["plotProf"] ?></td>
+
+
+
+                            <td>
+                                <div class="button-container">
+
+                                    <!-- this is the Edit Information button -->
+                                    <a href="room_index.php?room_edit=<?php echo $row["roomID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
+
+                                    <form method="POST" action="room_all_process.php">
+                                        <input type="hidden" name="roomID" value="<?php echo $row['roomID']; ?>">
+                                        <button type="submit" class="edit_btn" name="room_toggle_status"><i class='bx bx-window-close'></i></button>
+                                    </form>
+
+                                </div>
+                            </td>
+
+
+                        </tr>
+
+
+                    <?php
+                        $i++;
+                    } ?>
+                </tbody>
+            </table>
         </div>
     </div>
 

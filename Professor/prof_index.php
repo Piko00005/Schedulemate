@@ -40,6 +40,7 @@ if (isset($_GET['prof_edit'])) {
         </div>
     </div>
 
+    <!-- This is to display the notifications or error messages -->
     <div class="message">
         <?php if (isset($_SESSION['message'])) : ?>
             <div class="message">
@@ -147,6 +148,7 @@ if (isset($_GET['prof_edit'])) {
                 </div>
             </div>
 
+            <!-- this is where in the button will switch between "Adding" and Updating for the profs info -->
             <?php if ($prof_edit_state == false) : ?>
                 <button class="add_new" type="submit" name="prof_add_new">Add New</button>
             <?php else : ?>
@@ -155,6 +157,7 @@ if (isset($_GET['prof_edit'])) {
         </form>
     </div>
 
+    <!-- this is where the data will be displayed -->
     <div class="table_section">
         <table>
             <thead>
@@ -197,6 +200,7 @@ if (isset($_GET['prof_edit'])) {
                                 <!-- this is the Edit Information button -->
                                 <a href="prof_index.php?prof_edit=<?php echo $row["profID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
 
+                                <!-- this is for the Active or Inactive status -->
                                 <form method="POST" action="prof_all_process.php">
                                     <input type="hidden" name="profID" value="<?php echo $row['profID']; ?>">
                                     <button type="submit" class="edit_btn" name="prof_toggle_status"><i class='bx bx-window-close'></i></button>
@@ -206,24 +210,27 @@ if (isset($_GET['prof_edit'])) {
 
                         </td>
                     </tr>
+
+                    <!-- this is the "more" information regarding the profs -->
                     <tr class="details hidden">
-                        <td colspan="8"> <!-- Adjust the colspan to match the number of columns in your table -->
+                        <td></td>
+                        <td colspan="6"> <!-- Adjust the colspan to match the number of columns in your table -->
                             <table class="inner-details">
                                 <tr>
                                     <td class="detail-title">Mobile No.</td>
-                                    <td class="detail-content"><?php echo $row["profMobile"]; ?></td>
+                                    <td class="detail-content" colspan="5"><?php echo $row["profMobile"]; ?></td>
                                 </tr>
                                 <tr>
                                     <td class="detail-title">Address</td>
-                                    <td class="detail-content"><?php echo $row["profAddress"]; ?></td>
+                                    <td class="detail-content" colspan="5"><?php echo $row["profAddress"]; ?></td>
                                 </tr>
                                 <tr>
                                     <td class="detail-title">Education</td>
-                                    <td class="detail-content"><?php echo $row["profEduc"]; ?></td>
+                                    <td class="detail-content" colspan="5"><?php echo $row["profEduc"]; ?></td>
                                 </tr>
                                 <tr>
                                     <td class="detail-title">Expertise</td>
-                                    <td class="detail-content"><?php echo $row["profExpert"]; ?></td>
+                                    <td class="detail-content" colspan="5"><?php echo $row["profExpert"]; ?></td>
                                 </tr>
                             </table>
                         </td>

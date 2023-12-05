@@ -39,9 +39,9 @@ function generateAcademicYears()
 
     for ($i = $currentYear; $i <= $currentYear + 10; $i++) {
         $nextYear = $i + 1;
-        $academicYear = "SY " . $i . "-" . $nextYear;
-        $value = "sy" . $i . $nextYear;
-        $options .= "<option value=\"$value\">$academicYear</option>";
+        $academicYear = "SY " . $i . " - " . $nextYear;
+        $plotYear = "SY " . $i . " - " . $nextYear;
+        $options .= "<option value=\"$plotYear\">$academicYear</option>";
     }
 
     return $options;
@@ -69,8 +69,8 @@ function generateAcademicYears()
 
                 <div class="row">
                     <div class="column">
-                        <label for="plotSub">Academic Year</label>
-                        <select name="plotYear" id="plotSub">
+                        <label for="plotYear">Academic Year</label>
+                        <select name="plotYear" id="plotYear">
                             <option value="" disabled selected>Select Academic Year</option>
                             <!-- the function to generate academic year options -->
                             <?php echo generateAcademicYears(); ?>
@@ -78,11 +78,11 @@ function generateAcademicYears()
                     </div>
 
                     <div class="column">
-                        <label for="plotSub">Semester</label>
-                        <select name="plotSem" id="plotSub">
+                        <label for="plotSem">Semester</label>
+                        <select name="plotSem" id="plotSem">
                             <option value="" disabled selected>Select Semester</option>
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
+                            <option value="">1st Semester</option>
+                            <option value="">2nd Semester</option>
                         </select>
                     </div>
 
@@ -220,11 +220,13 @@ function generateAcademicYears()
                         <th>No.</th>
                         <th>Academic Year</th>
                         <th>Semester</th>
-                        <th>Subject</th>
                         <th>Section</th>
+                        <th>Subject</th>                      
                         <th>Room</th>
                         <th>Professor</th>
-                        <th>Time</th>
+                        <th>Day</th>
+                        <th>Time Start</th>
+                        <th>Time End</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -235,13 +237,17 @@ function generateAcademicYears()
                     while ($row = mysqli_fetch_array($result)) {
                     ?>
                         <tr>
-                            <td><?php echo $i; ?></td>
+                            
+                            <td><?php echo $row["plotID"] ?></td>            
                             <td><?php echo $row["plotYear"] ?></td>
                             <td><?php echo $row["plotSem"] ?></td>
-                            <td><?php echo $row["plotSubj"] ?></td>
                             <td><?php echo $row["plotSection"] ?></td>
+                            <td><?php echo $row["plotSubj"] ?></td>                           
                             <td><?php echo $row["plotRoom"] ?></td>
                             <td><?php echo $row["plotProf"] ?></td>
+                            <td><?php echo $row["plotDay"] ?></td>
+                            <td><?php echo $row["plotTimeStart"] ?></td>
+                            <td><?php echo $row["plotTimeEnd"] ?></td>
 
 
 
@@ -249,12 +255,8 @@ function generateAcademicYears()
                                 <div class="button-container">
 
                                     <!-- this is the Edit Information button -->
-                                    <a href="room_index.php?room_edit=<?php echo $row["roomID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
-
-                                    <form method="POST" action="room_all_process.php">
-                                        <input type="hidden" name="roomID" value="<?php echo $row['roomID']; ?>">
-                                        <button type="submit" class="edit_btn" name="room_toggle_status"><i class='bx bx-window-close'></i></button>
-                                    </form>
+                                    <a href="schedule_index.php?schedule_edit=<?php echo $row["plotID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
+                                
 
                                 </div>
                             </td>

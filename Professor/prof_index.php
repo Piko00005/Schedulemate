@@ -28,7 +28,6 @@ if (isset($_GET['prof_edit'])) {
     <link rel="stylesheet" href="../Dashboard/nav.css">
     <link rel="stylesheet" href="../Professor/tb.css">
 </head>
-</head>
 
 <body>
     <div class="table">

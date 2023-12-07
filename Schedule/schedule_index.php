@@ -18,6 +18,7 @@ if (isset($_GET['sched_edit'])) {
     $plotTimeEnd = $data['plotTimeEnd'];
 }
 
+// display data for dropdown
 $stmnt = "SELECT subID, subCode  FROM tb_subjects ";
 $result_subject = mysqli_query($conn, $stmnt);
 
@@ -39,9 +40,9 @@ function generateAcademicYears()
 
     for ($i = $currentYear; $i <= $currentYear + 10; $i++) {
         $nextYear = $i + 1;
-        $academicYear = "SY " . $i . "-" . $nextYear;
-        $value = "sy" . $i . $nextYear;
-        $options .= "<option value=\"$value\">$academicYear</option>";
+        $academicYear = "SY " . $i . " - " . $nextYear;
+        $plotYear = "SY " . $i . " - " . $nextYear;
+        $options .= "<option value=\"$plotYear\">$academicYear</option>";
     }
 
     return $options;
@@ -65,12 +66,12 @@ function generateAcademicYears()
         </div>
         <div class="container">
             <form method="POST" action="schedule_all_process.php">
-            <input type="hidden" name="plotID" value="<?php echo $plotID; ?>">
+                <input type="hidden" name="plotID" value="<?php echo $plotID; ?>">
 
                 <div class="row">
                     <div class="column">
-                        <label for="plotSub">Academic Year</label>
-                        <select name="plotYear" id="plotSub">
+                        <label for="plotYear">Academic Year</label>
+                        <select name="plotYear" id="plotYear">
                             <option value="" disabled selected>Select Academic Year</option>
                             <!-- the function to generate academic year options -->
                             <?php echo generateAcademicYears(); ?>
@@ -78,11 +79,11 @@ function generateAcademicYears()
                     </div>
 
                     <div class="column">
-                        <label for="plotSub">Semester</label>
-                        <select name="plotSem" id="plotSub">
+                        <label for="plotSem">Semester</label>
+                        <select name="plotSem" id="plotSem">
                             <option value="" disabled selected>Select Semester</option>
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
                         </select>
                     </div>
 
@@ -115,7 +116,7 @@ function generateAcademicYears()
                             <?php
                                 }
                             } ?>
-                            
+
                         </select>
                     </div>
 
@@ -220,49 +221,73 @@ function generateAcademicYears()
                         <th>No.</th>
                         <th>Academic Year</th>
                         <th>Semester</th>
-                        <th>Subject</th>
                         <th>Section</th>
+                        <!-- <th>Subject</th>
                         <th>Room</th>
                         <th>Professor</th>
-                        <th>Time</th>
+                        <th>Day</th>
+                        <th>Time Start</th>
+                        <th>Time End</th> -->
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- display data grid -->
                     <?php
                     $result = mysqli_query($conn, "SELECT * FROM tb_plotting, tb_week");
                     $i = 1;
                     while ($row = mysqli_fetch_array($result)) {
                     ?>
                         <tr>
-                            <td><?php echo $i; ?></td>
+
+                            <td><?php echo $row["plotID"] ?></td>
                             <td><?php echo $row["plotYear"] ?></td>
                             <td><?php echo $row["plotSem"] ?></td>
-                            <td><?php echo $row["plotSubj"] ?></td>
                             <td><?php echo $row["plotSection"] ?></td>
-                            <td><?php echo $row["plotRoom"] ?></td>
-                            <td><?php echo $row["plotProf"] ?></td>
-
-
-
+                            
                             <td>
                                 <div class="button-container">
+                                    <!-- this is the more information button -->
+                                    <button class="toggleDetails">+</button>
 
                                     <!-- this is the Edit Information button -->
-                                    <a href="room_index.php?room_edit=<?php echo $row["roomID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
-
-                                    <form method="POST" action="room_all_process.php">
-                                        <input type="hidden" name="roomID" value="<?php echo $row['roomID']; ?>">
-                                        <button type="submit" class="edit_btn" name="room_toggle_status"><i class='bx bx-window-close'></i></button>
-                                    </form>
-
+                                    <a href="schedule_index.php?schedule_edit=<?php echo $row["plotID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
                                 </div>
                             </td>
-
-
                         </tr>
 
-
+                        <!-- this is the "more" information regarding the profs -->
+                        <tr class="details hidden">
+                            <td></td>
+                            <td colspan="4"> <!-- Adjust the colspan to match the number of columns in your table -->
+                                <table class="inner-details">
+                                    <tr>
+                                        <td class="detail-title">Subject</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotSubj"] ?></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="detail-title">Room</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotRoom"] ?></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="detail-title">Professor</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotProf"] ?></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="detail-title">Day</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotDay"] ?></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="detail-title">Time Start</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotTimeStart"] ?></td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="detail-title">Time End</td>
+                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotTimeEnd"] ?></td></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                     <?php
                         $i++;
                     } ?>
@@ -270,6 +295,16 @@ function generateAcademicYears()
             </table>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.toggleDetails').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var detailRow = this.closest('tr').nextElementSibling;
+                detailRow.classList.toggle('hidden');
+                this.textContent = detailRow.classList.contains('hidden') ? '+' : '-';
+            });
+        });
+    </script>
 
 </body>
 

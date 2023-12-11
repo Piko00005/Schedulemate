@@ -72,6 +72,7 @@ if (isset($_GET['room_edit'])) {
             </form>
         </div>
 
+        <!-- Grid View -->
         <div class="table_section">
             <table>
                 <thead>

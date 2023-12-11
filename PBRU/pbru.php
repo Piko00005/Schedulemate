@@ -1,4 +1,6 @@
-<?php include('../Dashboard/nav.html'); ?>
+<?php include('../Dashboard/nav.html'); 
+include('../Professor/db.php');
+?>
 <link rel="stylesheet" href="css/tb.css" />
 
 
@@ -33,27 +35,86 @@
                     <tr>
                         <th>School Year</th>
                         <th>Semester</th>
+                        <th>Room</th>
+                        <th>Day & Time</th>
                         <th>Subject</th>
                         <th>Section</th>
-                        <th>Room</th>
                         <th>Professor</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <?php
+                $result = mysqli_query($conn, "SELECT p.*, w.* FROM tb_plotting p INNER JOIN tb_week w ON p.plotID = w.plotID ORDER BY p.plotYear, p.plotSem, p.plotRoom,
+                CASE WHEN w.plotDay = 'Monday' THEN 1
+                WHEN w.plotDay = 'Tuesday' THEN 2
+                WHEN w.plotDay = 'Wednesday' THEN 3
+                WHEN w.plotDay = 'Thursday' THEN 4
+                WHEN w.plotDay = 'Friday' THEN 5
+                WHEN w.plotDay = 'Saturday' THEN 6
+                WHEN w.plotDay = 'Sunday' THEN 7 END ASC, p.plotSubj, p.plotSection, p.plotProf");
+                $prevSem = "";
+                $prevYear = "";
+                $prevRoom = "";
+                $prevSubject = "";
+                $prevSection = "";
+                $prevProf = "";
+                
+                while ($row = mysqli_fetch_array($result)) {
+                ?>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <button class="view_btn"><i class='bx bx-window-open'></i></button>
-                            <button class="disable_btn"><i class='bx bx-window-close'></i></button>
+                        <td><?php
+                            if ($prevYear != $row["plotYear"]) {
+                                echo $row["plotYear"];
+                            }
+                            $prevYear = $row["plotYear"];
+                            ?>
                         </td>
+                        <td><?php
+                            if ($prevSem != $row["plotSem"]) {
+                                echo $row["plotSem"];
+                            }
+                            $prevSem = $row["plotSem"];
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            if ($prevRoom != $row["plotRoom"]) {
+                                echo $row["plotRoom"];
+                            }
+                            $prevRoom = $row["plotRoom"];
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo $row["plotDay"] . " - " . date("h:i A", strtotime($row["plotTimeStart"])) . " - " . date("h:i A", strtotime($row["plotTimeEnd"]));
+                            ?>
+                        </td>
+                        <td><?php
+                            if ($prevSubject != $row["plotSubj"]) {
+                                echo $row["plotSubj"];
+                            }
+                            $prevSubject = $row["plotSubj"];
+                            ?>
+                        </td>
+                        <td><?php
+                            if ($prevSection != $row["plotSection"]) {
+                                echo $row["plotSection"];
+                            }
+                            $prevSection = $row["plotSection"];
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            if ($prevProf != $row["plotProf"]) {
+                                echo $row["plotProf"];
+                            }
+                            $prevProf = $row["plotProf"];
+                            ?>
+                        </td>           
                     </tr>
-                </tbody>
+                <?php
+                } ?>
+                    
             </table>
         </div>
     </div>

@@ -1,6 +1,4 @@
 <?php
-//session_start();
-
 include_once('../Professor/db.php');
 include_once('../Subject/subject_all_process.php');
 
@@ -18,12 +16,6 @@ $sched_edit_state = false;
 
 //saving records
 if (isset($_POST['sched_add_new'])) {
-
-    // echo"<pre>";
-    // var_dump($_POST);
-    // echo"</pre>";
-    // die;
-
     $plotYear = $_POST["plotYear"];
     $plotSem = $_POST["plotSem"];
     $plotSubj = $_POST["plotSubj"];
@@ -42,66 +34,83 @@ if (isset($_POST['sched_add_new'])) {
     // echo"</pre>";
     // die;
 
-
-
     //sub table
-    $plotDay = $_POST["plotMon"];
-    $plotTimeStart = $_POST["tsMon"];
-    $plotTimeEnd = $_POST["teMon"];
+    if (!empty($_POST["plotMon"]) && !empty($_POST["tsMon"]) && !empty($_POST["teMon"])) {
+        $plotDay = $_POST["plotMon"];
+        $plotTimeStart = $_POST["tsMon"];
+        $plotTimeEnd = $_POST["teMon"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
+    }
 
-    $plotDay = $_POST["plotTue"];
-    $plotTimeStart = $_POST["tsTue"];
-    $plotTimeEnd = $_POST["teTue"];
+    if (!empty($_POST["plotTue"]) && !empty($_POST["tsTue"]) && !empty($_POST["teTue"])) {
+        $plotDay = $_POST["plotTue"];
+        $plotTimeStart = $_POST["tsTue"];
+        $plotTimeEnd = $_POST["teTue"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
+    }
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
+    if (!empty($_POST["plotWed"]) && !empty($_POST["tsWed"]) && !empty($_POST["teWed"])) {
+        $plotDay = $_POST["plotWed"];
+        $plotTimeStart = $_POST["tsWed"];
+        $plotTimeEnd = $_POST["teWed"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
 
+    }
 
-    $plotDay = $_POST["plotWed"];
-    $plotTimeStart = $_POST["tsWed"];
-    $plotTimeEnd = $_POST["teWed"];
+    if (!empty($_POST["plotThu"]) && !empty($_POST["tsThu"]) && !empty($_POST["teThu"])) {
+        $plotDay = $_POST["plotThu"];
+        $plotTimeStart = $_POST["tsThu"];
+        $plotTimeEnd = $_POST["teThu"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
+    }
 
-    $plotDay = $_POST["plotThu"];
-    $plotTimeStart = $_POST["tsThu"];
-    $plotTimeEnd = $_POST["teThu"];
+    if (!empty($_POST["plotFri"]) && !empty($_POST["tsFri"]) && !empty($_POST["teFri"])) {
+        $plotDay = $_POST["plotFri"];
+        $plotTimeStart = $_POST["tsFri"];
+        $plotTimeEnd = $_POST["teFri"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
+    }
 
-    $plotDay = $_POST["plotFri"];
-    $plotTimeStart = $_POST["tsFri"];
-    $plotTimeEnd = $_POST["teFri"];
+    if (!empty($_POST["plotSat"]) && !empty($_POST["tsSat"]) && !empty($_POST["teSat"])) {
+        $plotDay = $_POST["plotSat"];
+        $plotTimeStart = $_POST["tsSat"];
+        $plotTimeEnd = $_POST["teSat"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
+    }
 
-    $plotDay = $_POST["plotSat"];
-    $plotTimeStart = $_POST["tsSat"];
-    $plotTimeEnd = $_POST["teSat"];
+    if (!empty($_POST["plotSun"]) && !empty($_POST["tsSun"]) && !empty($_POST["teSun"])) {
+       $plotDay = $_POST["plotSun"];
+        $plotTimeStart = $_POST["tsSun"];
+        $plotTimeEnd = $_POST["teSun"];
+    
+        $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
+        $stmt->execute();  
 
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
-
-    $plotDay = $_POST["plotSun"];
-    $plotTimeStart = $_POST["tsSun"];
-    $plotTimeEnd = $_POST["teSun"];
-
-    $stmt = $conn->prepare("INSERT INTO tb_week (plotDay, plotTimeStart, plotTimeEnd, plotID) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $plotDay, $plotTimeStart, $plotTimeEnd, $row[0]);
-    $stmt->execute();
-
+    }
+   
 
     if ($stmt) {
         $_SESSION['message'] = "Schedule Details Saved Successfully";

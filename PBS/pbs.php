@@ -1,6 +1,5 @@
 <?php include('../Dashboard/nav.html');
 include('../Professor/db.php');
-
 ?>
 
 
@@ -41,15 +40,21 @@ include('../Professor/db.php');
                         <th>Semester</th>
                         <th>Section</th>
                         <th>Subject</th>
-                        <th>Day</th>
-                        <th>Time</th>
+                        <th>Day & Time </th>
                         <th>Room</th>
                         <th>Professor</th>
                         <th></th>
                     </tr>
                 </thead>
                 <?php
-                $result = mysqli_query($conn, "SELECT plotYear, plotSem, plotSection, plotSubj, plotDay, plotTimeStart, plotTimeEnd, plotRoom, plotProf FROM tb_week, tb_plotting ORDER BY plotYear, plotSem, plotSection, plotSubj, plotRoom, plotProf");
+                $result = mysqli_query($conn, "SELECT p.*, w.* FROM tb_plotting p INNER JOIN tb_week w ON p.plotID = w.plotID ORDER BY p.plotYear, p.plotSem, p.plotSection, p.plotSubj, 
+                CASE WHEN w.plotDay = 'Monday' THEN 1
+                WHEN w.plotDay = 'Tuesday' THEN 2
+                WHEN w.plotDay = 'Wednesday' THEN 3
+                WHEN w.plotDay = 'Thursday' THEN 4
+                WHEN w.plotDay = 'Friday' THEN 5
+                WHEN w.plotDay = 'Saturday' THEN 6
+                WHEN w.plotDay = 'Sunday' THEN 7 END ASC,  p.plotRoom, p.plotProf");
                 $prevSem = "";
                 $prevYear = "";
                 $prevSection = "";
@@ -88,16 +93,21 @@ include('../Professor/db.php');
                             $prevSubject = $row["plotSubj"];
                             ?>
                         </td>
-                        <td><?php echo $row["plotDay"] ?></td>
-                        <td><?php echo $row["plotTimeStart"] ?> AM - <?php echo $row["plotTimeEnd"] ?> PM</td>
-                        <td><?php
+                        <td>
+                            <?php
+                            echo $row["plotDay"] . " - " . date("h:i A", strtotime($row["plotTimeStart"])) . " - " . date("h:i A", strtotime($row["plotTimeEnd"]));
+                            ?>
+                        </td>
+                        <td>
+                            <?php
                             if ($prevRoom != $row["plotRoom"]) {
                                 echo $row["plotRoom"];
                             }
                             $prevRoom = $row["plotRoom"];
                             ?>
                         </td>
-                        <td><?php
+                        <td>
+                            <?php
                             if ($prevProf != $row["plotProf"]) {
                                 echo $row["plotProf"];
                             }
@@ -105,6 +115,7 @@ include('../Professor/db.php');
                             ?>
                         </td>
                     </tr>
+
                 <?php
                 } ?>
 

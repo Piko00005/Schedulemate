@@ -1,5 +1,7 @@
-<?php //session_start(); 
-include('../Dashboard/nav.html'); ?>
+<?php
+session_start();
+include('../Dashboard/nav.html');
+?>
 
 <?php
 include('../Professor/db.php');
@@ -31,7 +33,6 @@ $result_room = mysqli_query($conn, $stmnt);
 $stmnt = "SELECT profID, profFname, profLname  FROM tb_professor ";
 $result_professor = mysqli_query($conn, $stmnt);
 
-
 // Function to generate academic year options dynamically
 function generateAcademicYears()
 {
@@ -48,8 +49,6 @@ function generateAcademicYears()
     return $options;
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +82,14 @@ function generateAcademicYears()
                         <select name="plotSem" id="plotSem">
                             <option value="" disabled selected>Select Semester</option>
                             <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
+                            <?php
+                            // Check if the 1st Semester is selected, and hide the 2nd Semester option
+                            if ($_POST['plotSem'] !== "1st Semester") {
+                            ?>
+                                <option value="2nd Semester">2nd Semester</option>
+                            <?php
+                            }
+                            ?>
                         </select>
                     </div>
 
@@ -92,7 +98,6 @@ function generateAcademicYears()
                         <select name="plotSubj" id="plotSub">
                             <option value="" disabled selected>Select Subject</option>
                             <?php
-
                             if (mysqli_num_rows($result_subject) > 0) {
                                 while ($row = mysqli_fetch_assoc($result_subject)) {
                             ?>
@@ -115,8 +120,8 @@ function generateAcademicYears()
                                     <option value="<?= $row['secProgram'] ?><?= $row['secYearlvl'] ?><?= $row['secName'] ?> "><?= $row['secProgram'] ?> <?= $row['secYearlvl'] ?> <?= $row['secName'] ?></option>
                             <?php
                                 }
-                            } ?>
-
+                            }
+                            ?>
                         </select>
                     </div>
 
@@ -131,7 +136,8 @@ function generateAcademicYears()
                                     <option value="<?= $row['roomBuild'] ?> <?= $row['roomNum'] ?>"><?= $row['roomBuild'] ?> <?= $row['roomNum'] ?></option>
                             <?php
                                 }
-                            } ?>
+                            }
+                            ?>
                         </select>
                     </div>
 
@@ -146,7 +152,8 @@ function generateAcademicYears()
                                     <option value="<?= $row['profFname'] ?><?= $row['profLname'] ?> "><?= $row['profFname'] ?> <?= $row['profLname'] ?></option>
                             <?php
                                 }
-                            } ?>
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -155,59 +162,59 @@ function generateAcademicYears()
                     <div class="column">
                         <h3>MONDAY</h3>
                         <input type="hidden" name="plotMon" value="Monday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsMon" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teMon" type="time" id="timeEnd">
+                        <label for="timeStartMon">Time Starts</label>
+                        <input name="tsMon" type="time" id="timeStartMon">
+                        <label for="timeEndMon">Time Ends</label>
+                        <input name="teMon" type="time" id="timeEndMon">
                     </div>
                     <div class="column">
                         <h3>TUESDAY</h3>
                         <input type="hidden" name="plotTue" value="Tuesday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsTue" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teTue" type="time" id="timeEnd">
+                        <label for="timeStartTue">Time Starts</label>
+                        <input name="tsTue" type="time" id="timeStartTue">
+                        <label for="timeEndTue">Time Ends</label>
+                        <input name="teTue" type="time" id="timeEndTue">
                     </div>
                     <div class="column">
                         <h3>WEDNESDAY</h3>
                         <input type="hidden" name="plotWed" value="Wednesday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsWed" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teWed" type="time" id="timeEnd">
+                        <label for="timeStartWed">Time Starts</label>
+                        <input name="tsWed" type="time" id="timeStartWed">
+                        <label for="timeEndWed">Time Ends</label>
+                        <input name="teWed" type="time" id="timeEndWed">
                     </div>
                     <div class="column">
                         <h3>THURSDAY</h3>
                         <input type="hidden" name="plotThu" value="Thursday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsThu" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teThu" type="time" id="timeEnd">
+                        <label for="timeStartThu">Time Starts</label>
+                        <input name="tsThu" type="time" id="timeStartThu">
+                        <label for="timeEndThu">Time Ends</label>
+                        <input name="teThu" type="time" id="timeEndThu">
                     </div>
                     <div class="column">
                         <h3>FRIDAY</h3>
                         <input type="hidden" name="plotFri" value="Friday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsFri" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teFri" type="time" id="timeEnd">
+                        <label for="timeStartFri">Time Starts</label>
+                        <input name="tsFri" type="time" id="timeStartFri">
+                        <label for="timeEndFri">Time Ends</label>
+                        <input name="teFri" type="time" id="timeEndFri">
                     </div>
                     <div class="column">
                         <h3>SATURDAY</h3>
                         <input type="hidden" name="plotSat" value="Saturday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsSat" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teSat" type="time" id="timeEnd">
+                        <label for="timeStartSat">Time Starts</label>
+                        <input name="tsSat" type="time" id="timeStartSat">
+                        <label for="timeEndSat">Time Ends</label>
+                        <input name="teSat" type="time" id="timeEndSat">
                     </div>
 
                     <div class="column">
                         <h3>SUNDAY</h3>
                         <input type="hidden" name="plotSun" value="Sunday">
-                        <label for="timeStart">Time Starts</label>
-                        <input name="tsSun" type="time" id="timeStart">
-                        <label for="timeEnd">Time Ends</label>
-                        <input name="teSun" type="time" id="timeEnd">
+                        <label for="timeStartSun">Time Starts</label>
+                        <input name="tsSun" type="time" id="timeStartSun">
+                        <label for="timeEndSun">Time Ends</label>
+                        <input name="teSun" type="time" id="timeEndSun">
                     </div>
                 </div>
                 <button class="add_new" type="submit" name="sched_add_new">Add New</button>
@@ -222,12 +229,6 @@ function generateAcademicYears()
                         <th>Academic Year</th>
                         <th>Semester</th>
                         <th>Section</th>
-                        <!-- <th>Subject</th>
-                        <th>Room</th>
-                        <th>Professor</th>
-                        <th>Day</th>
-                        <th>Time Start</th>
-                        <th>Time End</th> -->
                         <th></th>
                     </tr>
                 </thead>
@@ -239,12 +240,10 @@ function generateAcademicYears()
                     while ($row = mysqli_fetch_array($result)) {
                     ?>
                         <tr>
-
                             <td><?php echo $row["plotID"] ?></td>
                             <td><?php echo $row["plotYear"] ?></td>
                             <td><?php echo $row["plotSem"] ?></td>
                             <td><?php echo $row["plotSection"] ?></td>
-                            
                             <td>
                                 <div class="button-container">
                                     <!-- this is the more information button -->
@@ -258,32 +257,20 @@ function generateAcademicYears()
 
                         <!-- this is the "more" information regarding the profs -->
                         <tr class="details hidden">
-                            <td></td>
+                            
                             <td colspan="4"> <!-- Adjust the colspan to match the number of columns in your table -->
                                 <table class="inner-details">
-                                    <tr>
+                                    <tr colspan="">
                                         <td class="detail-title">Subject</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotSubj"] ?></td></td>
-                                    </tr>
-                                    <tr>
                                         <td class="detail-title">Room</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotRoom"] ?></td></td>
-                                    </tr>
-                                    <tr>
+                                        <td class="detail-title">Day & Time</td>
                                         <td class="detail-title">Professor</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotProf"] ?></td></td>
                                     </tr>
                                     <tr>
-                                        <td class="detail-title">Day</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotDay"] ?></td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="detail-title">Time Start</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotTimeStart"] ?></td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="detail-title">Time End</td>
-                                        <td class="detail-content" colspan="1"><td><?php echo $row["plotTimeEnd"] ?></td></td>
+                                        <td class="detail-content"><?php echo $row["plotSubj"] ?></td>
+                                        <td class="detail-content"><?php echo $row["plotRoom"] ?></td>
+                                        <td class="detail-content"><?php echo $row["plotDay"] . " - " . date("h:i A", strtotime($row["plotTimeStart"])) . " - " . date("h:i A", strtotime($row["plotTimeEnd"])); ?></td>
+                                        <td class="detail-content"><?php echo $row["plotProf"] ?></td>
                                     </tr>
                                 </table>
                             </td>
@@ -305,9 +292,8 @@ function generateAcademicYears()
             });
         });
     </script>
-
 </body>
 
 </html>
 
-</html>
+

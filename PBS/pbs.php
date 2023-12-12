@@ -2,17 +2,15 @@
 include('../Professor/db.php');
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 
-<link rel="stylesheet" href="css/tb.css" />
-
-
+<head>
+    <link rel="stylesheet" href="../Dashboard/nav.css">
+    <link rel="stylesheet" href="../Professor/tb.css">
+    <link rel="stylesheet" href="home.css">
+</head>
 <body>
-
-    <head>
-        <link rel="stylesheet" href="../Dashboard/nav.css">
-        <link rel="stylesheet" href="../Professor/tb.css">
-        <link rel="stylesheet" href="home.css">
-    </head>
 
     <div class="table">
         <div class="table_header">
@@ -24,10 +22,17 @@ include('../Professor/db.php');
 
             <div>
                 <select id="filter">
-                    <option value="" disabled selected>Sort By</option>
-                    <option value="sy">School Year</option>
-                    <option value="ylvl">Year Level</option>
-                    <option value="sem">Semester</option>
+                    <option value="" disabled selected>Filter by Semester</option>
+                    <option value="1st Semester">1st Semester</option>
+                    <option value="2nd Semester">2nd Semester</option>
+                </select>
+
+                <select id="filter">
+                    <option value="" disabled selected>Filter by Year Level</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
                 </select>
             </div>
         </div>
@@ -46,6 +51,7 @@ include('../Professor/db.php');
                         <th></th>
                     </tr>
                 </thead>
+
                 <?php
                 $result = mysqli_query($conn, "SELECT p.*, w.* FROM tb_plotting p INNER JOIN tb_week w ON p.plotID = w.plotID ORDER BY p.plotYear, p.plotSem, p.plotSection, p.plotSubj, 
                 CASE WHEN w.plotDay = 'Monday' THEN 1

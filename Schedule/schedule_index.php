@@ -20,7 +20,7 @@ if (isset($_GET['sched_edit'])) {
     $plotTimeEnd = $data['plotTimeEnd'];
 }
 
-// display data for dropdown
+// Display data for dropdown
 $stmnt = "SELECT subID, subCode  FROM tb_subjects ";
 $result_subject = mysqli_query($conn, $stmnt);
 
@@ -72,7 +72,7 @@ function generateAcademicYears()
                         <label for="plotYear">Academic Year</label>
                         <select name="plotYear" id="plotYear">
                             <option value="" disabled selected>Select Academic Year</option>
-                            <!-- the function to generate academic year options -->
+                            <!-- Function to generate academic year options -->
                             <?php echo generateAcademicYears(); ?>
                         </select>
                     </div>
@@ -233,51 +233,115 @@ function generateAcademicYears()
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- display data grid -->
+                    <!-- Display data grid -->
                     <?php
-                    $result = mysqli_query($conn, "SELECT * FROM tb_plotting, tb_week");
-                    $i = 1;
-                    while ($row = mysqli_fetch_array($result)) {
+                    $result_plot = mysqli_query($conn, "SELECT * FROM tb_plotting ORDER BY plotYear, plotSem, plotSection");
+                    $prevSem = "";
+                    $prevYear = "";
+                    $prevSection = "";
+                    $prevSubject = "";
+                    $prevRoom = "";
+                    $prevProf = "";
+
+                    while ($row_plot = mysqli_fetch_array($result_plot)) {
+
                     ?>
                         <tr>
-                            <td><?php echo $row["plotID"] ?></td>
-                            <td><?php echo $row["plotYear"] ?></td>
-                            <td><?php echo $row["plotSem"] ?></td>
-                            <td><?php echo $row["plotSection"] ?></td>
+                            <td><?php echo $row_plot["plotID"] ?></td>
+                            <td><?php
+                                if ($prevYear != $row_plot["plotYear"]) {
+                                    echo $row_plot["plotYear"];
+                                }
+                                $prevYear = $row_plot["plotYear"];
+                                ?>
+                            </td>
+                            <td><?php
+                                if ($prevSem != $row_plot["plotSem"]) {
+                                    echo $row_plot["plotSem"];
+                                }
+                                $prevSem = $row_plot["plotSem"];
+                                ?>
+                            </td>
+                            <td><?php
+                                if ($prevSection != $row_plot["plotSection"]) {
+                                    echo $row_plot["plotSection"];
+                                }
+                                $prevSection = $row_plot["plotSection"];
+                                ?>
+                            </td>
+
                             <td>
                                 <div class="button-container">
                                     <!-- this is the more information button -->
                                     <button class="toggleDetails">+</button>
 
                                     <!-- this is the Edit Information button -->
-                                    <a href="schedule_index.php?schedule_edit=<?php echo $row["plotID"]; ?>" class="edit_btn"><button class="edit_btn"><i class='bx bx-edit-alt'></i></button></a>
+                                    <a href="schedule_index.php?schedule_edit=<?php echo $row_plot["plotID"]; ?>" class="edit_btn">
+                                        <button class="edit_btn"><i class='bx bx-edit-alt'></i></button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
 
-                        <!-- this is the "more" information regarding the profs -->
-                        <tr class="details hidden">
-                            
-                            <td colspan="4"> <!-- Adjust the colspan to match the number of columns in your table -->
-                                <table class="inner-details">
-                                    <tr colspan="">
-                                        <td class="detail-title">Subject</td>
-                                        <td class="detail-title">Room</td>
-                                        <td class="detail-title">Day & Time</td>
-                                        <td class="detail-title">Professor</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="detail-content"><?php echo $row["plotSubj"] ?></td>
-                                        <td class="detail-content"><?php echo $row["plotRoom"] ?></td>
-                                        <td class="detail-content"><?php echo $row["plotDay"] . " - " . date("h:i A", strtotime($row["plotTimeStart"])) . " - " . date("h:i A", strtotime($row["plotTimeEnd"])); ?></td>
-                                        <td class="detail-content"><?php echo $row["plotProf"] ?></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    <?php
-                        $i++;
-                    } ?>
+                        <?php
+                        $result_week = mysqli_query($conn, "SELECT * FROM tb_week WHERE plotID = ". $row_plot['plotID'] ." ORDER BY
+                        CASE WHEN plotDay = 'Monday' THEN 1
+                        WHEN plotDay = 'Tuesday' THEN 2
+                        WHEN plotDay = 'Wednesday' THEN 3
+                        WHEN plotDay = 'Thursday' THEN 4
+                        WHEN plotDay = 'Friday' THEN 5
+                        WHEN plotDay = 'Saturday' THEN 6
+                        WHEN plotDay = 'Sunday' THEN 7 END ASC");
+                        
+                        ?>
+                            <tr class="details hidden">
+                                <td colspan="4">
+                                    <table class="inner-details">
+                                        <tr colspan="">
+                                            <td class="detail-title">Subject</td>
+                                            <td class="detail-title">Room</td>
+                                            <td class="detail-title">Day & Time</td>
+                                            <td class="detail-title">Professor</td>
+                                        </tr>
+                                        <?php
+                                        while ($row_week = mysqli_fetch_array($result_week)) {
+                                        ?>
+                                        <tr>
+                                            <td><?php
+                                                if ($prevSubject != $row_plot["plotSubj"]) {
+                                                    echo $row_plot["plotSubj"];
+                                                }
+                                                $prevSubject = $row_plot["plotSubj"];
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                echo $row_week["plotDay"] . " - " . date("h:i A", strtotime($row_week["plotTimeStart"])) . " - " . date("h:i A", strtotime($row_week["plotTimeEnd"]));
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if ($prevRoom != $row_plot["plotRoom"]) {
+                                                    echo $row_plot["plotRoom"];
+                                                }
+                                                $prevRoom = $row_plot["plotRoom"];
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if ($prevProf != $row_plot["plotProf"]) {
+                                                    echo $row_plot["plotProf"];
+                                                }
+                                                $prevProf = $row_plot["plotProf"];
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
+                                </td>
+                            </tr>
+                        <?php
+                        } ?>
                 </tbody>
             </table>
         </div>
@@ -295,5 +359,3 @@ function generateAcademicYears()
 </body>
 
 </html>
-
-

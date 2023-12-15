@@ -1,4 +1,6 @@
-<?php include('landing.html');?>
+<?php include('landing.html');
+session_start();
+?>
 <link rel="stylesheet" href="../Dashboard/landing.css">
 
 <body>

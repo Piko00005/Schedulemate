@@ -295,6 +295,7 @@ function generateAcademicYears()
                         
                         ?>
                             <tr class="details hidden">
+                                <td></td>
                                 <td colspan="4">
                                     <table class="inner-details">
                                         <tr colspan="">

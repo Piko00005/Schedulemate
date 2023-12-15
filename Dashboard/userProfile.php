@@ -1,4 +1,7 @@
-<?php include('../Dashboard/nav.html'); ?>
+<?php include('../Dashboard/nav.html'); 
+session_start();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">

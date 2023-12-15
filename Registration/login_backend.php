@@ -1,12 +1,5 @@
-<?php
-session_start();
-if (isset($_SESSION["user"])) {
-   header("Location: register_html.php");
-}
-?>
-
-
 <?php 
+session_start();
 
         //login
         if (isset($_POST["login"])) {
@@ -25,7 +18,14 @@ if (isset($_SESSION["user"])) {
                 if (password_verify($password, $user["userPass"])) {
                     $_SESSION["user"] = "yes";
                     $_SESSION["success"] = 2;
-                    header("Location: /Schedulemate/Dashboard/home.php");
+                    if($_SESSION['userPosition'] === 'Dean')
+                    {
+                        header("Location: /Schedulemate/PBS/pbs.php");
+                    }
+                    else{
+                        
+                        header("Location: /Schedulemate/Dashboard/home.php");
+                    }
                     
                     die();
                 }else{
@@ -36,7 +36,7 @@ if (isset($_SESSION["user"])) {
             }else{
                 array_push($errors, "Invalid email");
                 $_SESSION["errors"] = $errors;
-                header("Location: /SCHEDULEMATE/Registration/register_html.php");
+                header("Location: /Schedulemate/Registration/register_html.php");
             }
         }
 ?>

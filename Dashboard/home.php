@@ -1,4 +1,7 @@
-<?php include('nav.html');?>
+<?php include('nav.html');
+session_start();
+
+?>
 <link rel="stylesheet" href="../Dashboard/home.css">
 
 <body>
